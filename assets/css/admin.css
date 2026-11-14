@@ -1,0 +1,52 @@
+/* Panel admin: dipakai bersama site.css */
+body.admin{background:var(--soft)}
+.a-top{position:sticky; top:0; z-index:20; background:#fff; border-bottom:1px solid var(--line)}
+.a-top .wrap{display:flex; align-items:center; gap:16px; min-height:68px; flex-wrap:wrap; padding:8px 0}
+.a-top img{height:40px; width:auto}
+.a-top strong{font:700 1.05rem var(--display)}
+.a-top .sp{margin-left:auto; display:flex; gap:8px; flex-wrap:wrap}
+.a-main{width:min(980px,100% - 32px); margin:24px auto 120px}
+.a-card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:clamp(18px,3vw,28px)}
+.login{width:min(440px,100% - 32px); margin:8vh auto}
+.login img{height:56px; width:auto; margin-bottom:18px}
+.login h1{font-size:1.5rem; margin-bottom:6px}
+.login form{display:grid; gap:14px; margin-top:18px}
+.login label,.fg label{display:grid; gap:6px; font-weight:600; font-size:.95rem}
+.msg{min-height:1.3em; font-size:.94rem}
+.msg.err{color:#A32015}
+.setup ol{padding-left:1.2em; margin:12px 0 0; display:grid; gap:8px}
+.setup code,.hint code{background:var(--soft); border:1px solid var(--line); border-radius:6px; padding:1px 6px; font-size:.9em}
+.a-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px}
+.a-head{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:8px}
+.a-list li{display:grid; grid-template-columns:64px 1fr auto; gap:14px; align-items:center; padding:12px 0; border-top:1px solid var(--line)}
+.a-list li:first-child{border-top:0}
+.th{width:64px; height:64px; border-radius:10px; background:var(--soft); overflow:hidden; border:1px solid var(--line)}
+.th img{width:100%; height:100%; object-fit:cover}
+.a-list b{display:block; font:700 1rem/1.25 var(--display)}
+.a-list small{color:var(--muted)}
+.acts{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
+.btn-x{min-height:44px; padding:8px 12px; border-radius:10px; border:1.5px solid #B9C6B4; background:#fff; color:var(--ink); font:600 .88rem var(--display); cursor:pointer}
+.btn-x:hover{background:var(--soft)}
+.btn-x.danger{color:#A32015; border-color:#D9A9A3}
+.btn-x[disabled]{opacity:.45; cursor:not-allowed}
+.fg{display:grid; gap:16px; margin-top:16px}
+.fg .two{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.fg .hint{font-weight:400; color:var(--muted); font-size:.88rem}
+.check{display:flex !important; grid-template-columns:none; align-items:center; gap:10px; min-height:44px}
+.check input{width:22px; height:22px; accent-color:var(--forest)}
+.imgs{display:flex; flex-wrap:wrap; gap:10px}
+.imgs .im{position:relative; width:104px; height:104px; border-radius:12px; overflow:hidden; background:var(--soft); border:1px solid var(--line)}
+.imgs .im img{width:100%; height:100%; object-fit:cover}
+.imgs .im button{position:absolute; top:4px; right:4px; min-width:44px; min-height:32px; border:0; border-radius:8px; background:rgba(18,36,26,.85); color:#fff; font:600 .78rem var(--display); cursor:pointer}
+.imgs .im span{position:absolute; left:4px; bottom:4px; background:var(--lime); color:var(--lime-ink); font:700 .72rem var(--display); padding:2px 7px; border-radius:6px}
+.upl{position:relative; width:104px; height:104px; border-radius:12px; border:2px dashed #9FB199; display:grid; place-items:center; text-align:center; font:600 .86rem var(--display); color:var(--green); cursor:pointer; padding:6px}
+.upl:hover,.upl:focus-within{border-color:var(--forest); background:var(--soft)}
+.upl input{position:absolute; inset:0; opacity:0; cursor:pointer}
+.a-bar{position:fixed; left:0; right:0; bottom:0; z-index:25; background:#fff; border-top:1px solid var(--line); box-shadow:0 -8px 24px -18px rgba(11,58,32,.5)}
+.a-bar .wrap{display:flex; align-items:center; gap:12px; min-height:72px; flex-wrap:wrap; padding:10px 0}
+.a-bar .st{margin-right:auto; font-weight:600}
+.a-bar .st.dirty{color:#8A4B00}
+.gitem{display:grid; grid-template-columns:104px 1fr auto; gap:14px; align-items:center; padding:12px 0; border-top:1px solid var(--line)}
+.gitem:first-child{border-top:0}
+.gitem img{width:104px; height:78px; object-fit:cover; border-radius:10px; background:var(--soft)}
+@media (max-width:640px){ .fg .two{grid-template-columns:1fr} .a-list li{grid-template-columns:52px 1fr} .a-list .acts{grid-column:1/-1; justify-content:flex-start} .th{width:52px; height:52px} .gitem{grid-template-columns:84px 1fr} .gitem .acts{grid-column:1/-1; justify-content:flex-start} .gitem img{width:84px; height:64px} }

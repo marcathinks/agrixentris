@@ -1,0 +1,105 @@
+{
+  "settings": {
+    "wa": "6289607718976",
+    "hero": "assets/img/hero-greenhouse.webp",
+    "video": ""
+  },
+  "catalogs": [
+    {
+      "id": "benih",
+      "name": "Benih Cabai Hias",
+      "desc": "Benih cabai ornamental varietas IPB untuk tanaman hias pot, taman, dan koleksi."
+    },
+    {
+      "id": "tanaman",
+      "name": "Starter Pack & Tanaman",
+      "desc": "Paket lengkap untuk mulai menanam dan tanaman cabai hias siap pajang."
+    },
+    {
+      "id": "sarana",
+      "name": "Sarana Tanam",
+      "desc": "Pot, nutrisi AB mix, dan perlengkapan tanam."
+    }
+  ],
+  "products": [
+    {
+      "id": "p-triwarsana",
+      "slug": "benih-cabai-ornamental-triwarsana-ipb",
+      "name": "Benih Cabai Ornamental Triwarsana IPB",
+      "catalog": "benih",
+      "subtitle": "Isi 25 benih. Buah lima warna: ungu, merah, oranye, kuning, krem.",
+      "price": 30000,
+      "unit": "pcs",
+      "desc": "Triwarsana IPB adalah cabai ornamental dengan buah beraneka warna (ungu, merah, oranye, kuning, krem) saat matang. Cocok untuk tanaman hias pot, dekorasi taman, dan koleksi. Mudah dirawat dan produktif.",
+      "specs": "Isi: 25 benih\nVarietas: Triwarsana IPB\nWarna buah: ungu, merah, oranye, kuning, krem",
+      "images": ["assets/img/produk/triwarsana.svg"],
+      "available": true,
+      "featured": true,
+      "badge": ""
+    },
+    {
+      "id": "p-nazla",
+      "slug": "benih-cabai-ornamental-nazla-ipb",
+      "name": "Benih Cabai Ornamental Nazla IPB",
+      "catalog": "benih",
+      "subtitle": "Isi 25 benih. Buah ungu mengkilap saat matang.",
+      "price": 30000,
+      "unit": "pcs",
+      "desc": "Nazla IPB adalah cabai ornamental dengan buah berwarna ungu mengkilap saat matang. Cocok untuk tanaman hias pot, penghias taman, dan dekorasi. Mudah dirawat dan berbuah produktif.",
+      "specs": "Isi: 25 benih\nVarietas: Nazla IPB\nWarna buah: ungu mengkilap",
+      "images": ["assets/img/produk/nazla.svg"],
+      "available": true,
+      "featured": true,
+      "badge": ""
+    },
+    {
+      "id": "p-ayesha",
+      "slug": "benih-cabai-ornamental-ayesha-ipb",
+      "name": "Benih Cabai Ornamental Ayesha IPB",
+      "catalog": "benih",
+      "subtitle": "Isi 25 benih. Buah kuning, oranye, dan merah.",
+      "price": 30000,
+      "unit": "pcs",
+      "desc": "Ayesha IPB adalah cabai ornamental dengan buah beraneka warna (kuning, oranye, dan merah) saat matang. Cocok untuk tanaman hias pot, dekorasi taman, dan koleksi. Mudah dirawat dan produktif.",
+      "specs": "Isi: 25 benih\nVarietas: Ayesha IPB\nWarna buah: kuning, oranye, merah",
+      "images": ["assets/img/produk/ayesha.svg"],
+      "available": true,
+      "featured": true,
+      "badge": ""
+    },
+    {
+      "id": "p-starter",
+      "slug": "ornamental-chili-starter-pack",
+      "name": "Ornamental Chili Starter Pack",
+      "catalog": "tanaman",
+      "subtitle": "Tiga varian benih, media tanam, pupuk AB mix, pot, dan panduan.",
+      "price": 100000,
+      "unit": "paket",
+      "desc": "Paket lengkap untuk mulai menanam cabai hias di rumah.",
+      "specs": "Benih: 3 varian (Triwarsana, Ayesha, Nazla)\nMedia tanam: premium\nPupuk: AB mix 100 ml\nPot tanam: diameter 10 cm\nPanduan: panduan budidaya",
+      "images": ["assets/img/produk/starter-pack.svg"],
+      "available": true,
+      "featured": true,
+      "badge": ""
+    },
+    {
+      "id": "p-tanaman",
+      "slug": "tanaman-cabai-hias-ornamental",
+      "name": "Tanaman Cabai Hias Ornamental",
+      "catalog": "tanaman",
+      "subtitle": "Tanaman cabai hias dalam pot, siap pajang.",
+      "price": 150000,
+      "unit": "pot",
+      "desc": "",
+      "specs": "",
+      "images": ["assets/img/produk/tanaman-cabai-hias.svg"],
+      "available": true,
+      "featured": false,
+      "badge": ""
+    }
+  ],
+  "gallery": [
+    { "image": "assets/img/greenhouse-luar.webp", "caption": "Greenhouse" },
+    { "image": "assets/img/greenhouse-ajir.webp", "caption": "Budidaya di dalam greenhouse" }
+  ]
+}

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Panel Admin | AgriXentris Nusantara</title>
+<link rel="icon" href="/assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body class="admin">
+
+<main class="login" id="loginView" hidden>
+  <div class="a-card">
+    <img src="/assets/img/logo.png" alt="AgriXentris Nusantara">
+    <h1>Panel Admin</h1>
+    <p class="muted">Masuk untuk mengelola produk, galeri, dan pengaturan situs.</p>
+    <form id="loginForm">
+      <label>Kata sandi admin<input class="field" id="pw" type="password" autocomplete="current-password" required></label>
+      <p class="msg err" id="loginMsg" role="alert"></p>
+      <button class="btn btn-forest" type="submit" id="loginBtn">Masuk</button>
+    </form>
+  </div>
+</main>
+
+<main class="login" id="setupView" hidden>
+  <div class="a-card setup">
+    <h1>Panel admin belum dikonfigurasi</h1>
+    <p class="muted" style="margin-top:8px">Variabel berikut belum diisi di Vercel: <strong id="missingVars"></strong></p>
+    <ol>
+      <li>Buka proyek di Vercel, lalu <strong>Settings → Environment Variables</strong>.</li>
+      <li>Tambahkan <code>ADMIN_PASSWORD</code> (kata sandi panel ini), <code>GITHUB_TOKEN</code> (fine-grained token dengan izin Contents: Read and write untuk repo situs), dan <code>GITHUB_REPO</code> (format <code>pemilik/nama-repo</code>).</li>
+      <li>Buka tab <strong>Deployments</strong>, pilih deployment terbaru, lalu <strong>Redeploy</strong>.</li>
+    </ol>
+    <p style="margin-top:14px">Langkah lengkap ada di README repo.</p>
+  </div>
+</main>
+
+<div id="appView" hidden>
+  <header class="a-top"><div class="wrap">
+    <img src="/assets/img/logo.png" alt="AgriXentris Nusantara">
+    <strong>Panel Admin</strong>
+    <div class="sp"><a class="btn-x" href="/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none">Lihat situs</a><button type="button" class="btn-x" id="logoutBtn">Keluar</button></div>
+  </div></header>
+  <main class="a-main">
+    <div class="a-tabs" role="tablist" aria-label="Bagian panel" id="aTabs">
+      <button type="button" class="tab" role="tab" data-tab="produk">Produk</button>
+      <button type="button" class="tab" role="tab" data-tab="katalog">Katalog</button>
+      <button type="button" class="tab" role="tab" data-tab="galeri">Galeri</button>
+      <button type="button" class="tab" role="tab" data-tab="pengaturan">Pengaturan</button>
+    </div>
+    <div class="a-card" id="panel" aria-live="polite"></div>
+  </main>
+  <div class="a-bar"><div class="wrap">
+    <span class="st" id="status" role="status">Memuat…</span>
+    <button type="button" class="btn btn-line btn-sm" id="discardBtn" hidden>Batalkan perubahan</button>
+    <button type="button" class="btn btn-forest" id="publishBtn" disabled>Terbitkan perubahan</button>
+  </div></div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/assets/js/admin.js" defer></script>
+</body>
+</html>
