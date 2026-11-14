@@ -119,6 +119,39 @@
     }
   }
 
+  /* ---------- foto latar hero ---------- */
+  function initHero() {
+    var hero = $(".hero"), slides = $$("#heroBg img"), dots = $$("#heroDots button");
+    if (!hero || slides.length < 2) return;
+    var cur = 0, timer = null, hold = false;
+    var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function load(im) { var d = im.getAttribute("data-src"); if (d) { im.src = d; im.removeAttribute("data-src"); } }
+    function go(n) {
+      cur = (n + slides.length) % slides.length;
+      load(slides[cur]);
+      slides.forEach(function (im, k) { im.classList.toggle("on", k === cur); });
+      dots.forEach(function (d, k) { d.setAttribute("aria-current", k === cur); });
+    }
+    function stop() { clearInterval(timer); timer = null; }
+    function start() {
+      stop();
+      if (still || hold || document.hidden) return;
+      timer = setInterval(function () {
+        var next = slides[(cur + 1) % slides.length];
+        load(next);
+        if (next.complete && next.naturalWidth) go(cur + 1); // tunggu foto berikutnya selesai dimuat
+      }, 6000);
+    }
+    dots.forEach(function (d, k) { d.addEventListener("click", function () { go(k); start(); }); });
+    hero.addEventListener("mouseenter", function () { hold = true; stop(); });
+    hero.addEventListener("mouseleave", function () { hold = false; start(); });
+    hero.addEventListener("focusin", function () { hold = true; stop(); });
+    hero.addEventListener("focusout", function () { hold = false; start(); });
+    document.addEventListener("visibilitychange", start);
+    function warm() { load(slides[1]); start(); }
+    if (document.readyState === "complete") warm(); else window.addEventListener("load", warm);
+  }
+
   /* ---------- video ---------- */
   function videoEmbed(url) {
     var m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/.exec(url || "");
@@ -299,6 +332,7 @@
   });
 
   var yr = $("#yr"); if (yr) yr.textContent = new Date().getFullYear();
+  initHero();
   renderCart();
 
   fetch("/data/site.json", { cache: "no-cache" })
