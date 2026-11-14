@@ -32,7 +32,9 @@
       "unit": "pcs",
       "desc": "Triwarsana IPB adalah cabai ornamental dengan buah beraneka warna (ungu, merah, oranye, kuning, krem) saat matang. Cocok untuk tanaman hias pot, dekorasi taman, dan koleksi. Mudah dirawat dan produktif.",
       "specs": "Isi: 25 benih\nVarietas: Triwarsana IPB\nWarna buah: ungu, merah, oranye, kuning, krem",
-      "images": ["assets/img/produk/triwarsana.svg"],
+      "images": [
+        "assets/img/produk/triwarsana.svg"
+      ],
       "available": true,
       "featured": true,
       "badge": ""
@@ -47,7 +49,9 @@
       "unit": "pcs",
       "desc": "Nazla IPB adalah cabai ornamental dengan buah berwarna ungu mengkilap saat matang. Cocok untuk tanaman hias pot, penghias taman, dan dekorasi. Mudah dirawat dan berbuah produktif.",
       "specs": "Isi: 25 benih\nVarietas: Nazla IPB\nWarna buah: ungu mengkilap",
-      "images": ["assets/img/produk/nazla.svg"],
+      "images": [
+        "assets/img/produk/nazla.svg"
+      ],
       "available": true,
       "featured": true,
       "badge": ""
@@ -62,7 +66,9 @@
       "unit": "pcs",
       "desc": "Ayesha IPB adalah cabai ornamental dengan buah beraneka warna (kuning, oranye, dan merah) saat matang. Cocok untuk tanaman hias pot, dekorasi taman, dan koleksi. Mudah dirawat dan produktif.",
       "specs": "Isi: 25 benih\nVarietas: Ayesha IPB\nWarna buah: kuning, oranye, merah",
-      "images": ["assets/img/produk/ayesha.svg"],
+      "images": [
+        "assets/img/produk/ayesha.svg"
+      ],
       "available": true,
       "featured": true,
       "badge": ""
@@ -77,7 +83,9 @@
       "unit": "paket",
       "desc": "Paket lengkap untuk mulai menanam cabai hias di rumah.",
       "specs": "Benih: 3 varian (Triwarsana, Ayesha, Nazla)\nMedia tanam: premium\nPupuk: AB mix 100 ml\nPot tanam: diameter 10 cm\nPanduan: panduan budidaya",
-      "images": ["assets/img/produk/starter-pack.svg"],
+      "images": [
+        "assets/img/produk/starter-pack.svg"
+      ],
       "available": true,
       "featured": true,
       "badge": ""
@@ -92,14 +100,122 @@
       "unit": "pot",
       "desc": "",
       "specs": "",
-      "images": ["assets/img/produk/tanaman-cabai-hias.svg"],
+      "images": [
+        "assets/img/produk/tanaman-cabai-hias.svg"
+      ],
       "available": true,
       "featured": false,
       "badge": ""
     }
   ],
   "gallery": [
-    { "image": "assets/img/greenhouse-luar.webp", "caption": "Greenhouse" },
-    { "image": "assets/img/greenhouse-ajir.webp", "caption": "Budidaya di dalam greenhouse" }
+    {
+      "image": "uploads/f82089081d05550f.webp",
+      "caption": "Bersama mitra di Agribusiness and Technology Park IPB"
+    },
+    {
+      "image": "uploads/9b0a777c2fe7f5b7.webp",
+      "caption": "Penanaman cabai rawit Bonita IPB di rooftop greenhouse"
+    },
+    {
+      "image": "uploads/0ab32a4f866b6fcb.webp",
+      "caption": "Pendampingan penanaman di lahan"
+    },
+    {
+      "image": "uploads/625eaebb04897409.webp",
+      "caption": "Foto bersama peserta kegiatan lapang"
+    },
+    {
+      "image": "uploads/d43bf9391cb6bce6.webp",
+      "caption": "Foto bersama di kebun percontohan"
+    },
+    {
+      "image": "uploads/d3de8890dfb6829b.webp",
+      "caption": "Stan pameran AgriXentris Nusantara"
+    },
+    {
+      "image": "uploads/e057bf4e09b8109d.webp",
+      "caption": "Tim dalam kegiatan pertemuan program"
+    },
+    {
+      "image": "uploads/60506640400a6103.webp",
+      "caption": "Pengiriman bibit ke lokasi tanam"
+    },
+    {
+      "image": "uploads/0592322812f7ae6d.webp",
+      "caption": "Pembangunan greenhouse"
+    },
+    {
+      "image": "uploads/8f76737d8369dc99.webp",
+      "caption": "Budidaya cabai di dalam greenhouse"
+    },
+    {
+      "image": "uploads/595c74af6e8a5e45.webp",
+      "caption": "Tanaman cabai dengan ajir di greenhouse"
+    },
+    {
+      "image": "uploads/a41b351f9bca2c75.webp",
+      "caption": "Tanaman cabai muda di greenhouse"
+    },
+    {
+      "image": "uploads/586e052b3f5fc15b.webp",
+      "caption": "Persemaian bibit cabai"
+    },
+    {
+      "image": "uploads/da58ac992594f4c5.webp",
+      "caption": "Buah cabai hias beraneka warna"
+    },
+    {
+      "image": "uploads/67bcdeb7946046db.webp",
+      "caption": "Cabai hias siap dipajang"
+    },
+    {
+      "image": "uploads/aaa3a08a0d800e8f.webp",
+      "caption": "Cabai hias berbuah ungu"
+    },
+    {
+      "image": "uploads/31967186b6f4933c.webp",
+      "caption": "Tanaman cabai hias dalam pot"
+    },
+    {
+      "image": "uploads/1b33100b5fa11a1b.webp",
+      "caption": "Cabai kuning beserta hasil panennya"
+    },
+    {
+      "image": "uploads/d9d8ec5bc760ae76.webp",
+      "caption": "Tanaman cabai di lahan bermulsa"
+    },
+    {
+      "image": "uploads/fa4d3a43acb68a7b.webp",
+      "caption": "Tomat menjelang panen"
+    },
+    {
+      "image": "uploads/4ad7fea73aefb649.webp",
+      "caption": "Hasil panen cabai rawit"
+    },
+    {
+      "image": "uploads/effe0eaa36164fef.webp",
+      "caption": "Cabai rawit hasil panen"
+    },
+    {
+      "image": "uploads/3b248c77a7731251.webp",
+      "caption": "Cabai rawit siap dikirim"
+    },
+    {
+      "image": "uploads/3ddf9509fce5f867.webp",
+      "caption": "Tomat hasil panen"
+    },
+    {
+      "image": "uploads/288d46946a497069.webp",
+      "caption": "Tomat dengan berbagai tingkat kematangan"
+    },
+    {
+      "image": "assets/img/greenhouse-luar.webp",
+      "caption": "Greenhouse"
+    },
+    {
+      "image": "assets/img/greenhouse-ajir.webp",
+      "caption": "Budidaya di dalam greenhouse"
+    }
   ]
 }

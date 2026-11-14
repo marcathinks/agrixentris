@@ -268,11 +268,43 @@
   function renderGallery() {
     var g = $("#galleryGrid"); if (!g) return;
     var list = data.gallery || [];
-    g.innerHTML = list.length ? list.map(function (it) {
-      return '<figure><img loading="lazy" alt="' + esc(it.caption || "Foto kegiatan AgriXentris Nusantara") + '" src="' + esc(src(it.image)) + '">' +
+    g.innerHTML = list.length ? list.map(function (it, i) {
+      var alt = it.caption || "Foto kegiatan AgriXentris Nusantara";
+      return '<figure><button type="button" class="gbtn" data-g="' + i + '" aria-label="Perbesar foto: ' + esc(alt) + '"><img loading="lazy" alt="' + esc(alt) + '" src="' + esc(src(it.image)) + '"></button>' +
         (it.caption ? "<figcaption>" + esc(it.caption) + "</figcaption>" : "") + "</figure>";
     }).join("") : "";
     $("#gallerySec").hidden = !list.length;
+  }
+  var lb = null, lbIdx = 0;
+  function showLightbox(i) {
+    var list = data.gallery, it;
+    lbIdx = (i + list.length) % list.length; it = list[lbIdx];
+    var im = $("img", lb);
+    im.src = src(it.image); im.alt = it.caption || "Foto kegiatan AgriXentris Nusantara";
+    $(".lb-cap", lb).textContent = it.caption || "";
+    $(".lb-count", lb).textContent = (lbIdx + 1) + " / " + list.length;
+  }
+  function openLightbox(i) {
+    if (!data || !(data.gallery || []).length) return;
+    if (!lb) {
+      lb = document.createElement("dialog");
+      lb.className = "lightbox on-dark"; lb.setAttribute("aria-label", "Foto galeri");
+      lb.innerHTML = '<button type="button" class="lb-btn lb-x" data-lb="x" aria-label="Tutup">' + icon("i-x") + "</button>" +
+        '<button type="button" class="lb-btn lb-prev" data-lb="-1" aria-label="Foto sebelumnya">' + icon("i-arrow") + "</button>" +
+        '<figure><img alt=""><figcaption><span class="lb-cap" aria-live="polite"></span><span class="lb-count"></span></figcaption></figure>' +
+        '<button type="button" class="lb-btn lb-next" data-lb="1" aria-label="Foto berikutnya">' + icon("i-arrow") + "</button>";
+      document.body.appendChild(lb);
+      lb.addEventListener("click", function (e) {
+        var b = e.target.closest("[data-lb]");
+        if (!b) { if (!e.target.closest("figure")) lb.close(); return; }
+        if (b.getAttribute("data-lb") === "x") lb.close(); else showLightbox(lbIdx + Number(b.getAttribute("data-lb")));
+      });
+      lb.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowLeft") showLightbox(lbIdx - 1);
+        if (e.key === "ArrowRight") showLightbox(lbIdx + 1);
+      });
+    }
+    showLightbox(i); lb.showModal();
   }
 
   /* ---------- umum ---------- */
@@ -292,6 +324,8 @@
     if (add) { e.preventDefault(); addToCart(add.getAttribute("data-add"), 1); return; }
     var qb = e.target.closest("[data-q]");
     if (qb) { var id = qb.getAttribute("data-id"); setQty(id, (cart[id] || 0) + Number(qb.getAttribute("data-q"))); return; }
+    var gb = e.target.closest("[data-g]");
+    if (gb) { openLightbox(Number(gb.getAttribute("data-g"))); return; }
     var rm = e.target.closest("[data-rm]");
     if (rm) { setQty(rm.getAttribute("data-rm"), 0); return; }
     if (e.target.closest("#cartBtn")) { renderCart(); $("#cartDrawer").showModal(); return; }
