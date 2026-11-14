@@ -62,11 +62,10 @@
       body.innerHTML = '<div class="state" style="margin-top:16px"><b>Keranjang masih kosong</b>Pilih produk dari katalog, lalu pesan lewat WhatsApp.<br><a class="btn btn-forest btn-sm" href="/produk">Lihat katalog</a></div>';
       foot.hidden = true; return;
     }
-    var total = 0, unpriced = false, lines = [];
-    body.innerHTML = ids.map(function (id, i) {
+    var total = 0, unpriced = false;
+    body.innerHTML = ids.map(function (id) {
       var p = product(id), q = cart[id], im = p.images && p.images[0];
       if (p.price) total += p.price * q; else unpriced = true;
-      lines.push((i + 1) + ". " + p.name + " x" + q + (p.price ? " (" + rupiah(p.price * q) + ")" : " (tanya harga)"));
       return '<div class="citem">' +
         (im ? '<img alt="" src="' + esc(src(im)) + '">' : '<span></span>') +
         "<div><b>" + esc(p.name) + "</b>" + priceHtml(p) +
@@ -76,10 +75,74 @@
     }).join("");
     foot.hidden = false;
     $("#cartTotal").textContent = rupiah(total) + (unpriced ? " + item tanya harga" : "");
-    var msg = "Halo AgriXentris Nusantara, saya ingin memesan:\n" + lines.join("\n") +
+  }
+  function openCart() { renderCart(); $("#cartDrawer").showModal(); }
+
+  /* ---------- data pemesan ---------- */
+  var CUST_FIELDS = ["nama", "hp", "email", "alamat"];
+  function loadCustomer() {
+    try { var c = JSON.parse(localStorage.getItem("agx-customer") || "{}"); return c && typeof c === "object" ? c : {}; }
+    catch (e) { return {}; }
+  }
+  var CUST_RULES = {
+    nama: function (v) { return v ? "" : "Isi nama lengkap Anda."; },
+    hp: function (v) { var d = v.replace(/\D/g, ""); return d.length >= 9 && d.length <= 15 ? "" : "Isi nomor HP aktif, contoh 0812 3456 7890."; },
+    email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? "" : "Isi email seperti nama@email.com."; },
+    alamat: function (v) { return v ? "" : "Isi alamat pengiriman."; }
+  };
+  function orderMessage(c) {
+    var total = 0, unpriced = false;
+    var lines = Object.keys(cart).filter(function (id) { return product(id); }).map(function (id, i) {
+      var p = product(id), q = cart[id];
+      if (p.price) total += p.price * q; else unpriced = true;
+      return (i + 1) + ". " + p.name + " x" + q + (p.price ? " (" + rupiah(p.price * q) + ")" : " (tanya harga)");
+    });
+    if (!lines.length) return null;
+    return "Halo AgriXentris Nusantara, saya ingin memesan:\n" + lines.join("\n") +
       "\n\nTotal: " + rupiah(total) + (unpriced ? " (belum termasuk item tanya harga)" : "") +
-      "\n\nNama:\nAlamat pengiriman:";
-    $("#cartCheckout").href = waLink(msg);
+      "\n\nNama: " + c.nama + "\nNo. HP: " + c.hp + "\nEmail: " + c.email + "\nAlamat pengiriman: " + c.alamat;
+  }
+  var custForm = $("#cartFoot");
+  if (custForm && custForm.elements && custForm.elements.nama) {
+    var custVal = function (k) { return custForm.elements[k].value.replace(/\s+/g, " ").trim(); };
+    var custValues = function () { var c = {}; CUST_FIELDS.forEach(function (k) { c[k] = custVal(k); }); return c; };
+    // Galat tampil setelah isian ditinggalkan, dan hilang begitu isian disentuh lagi.
+    // Tempat galat selalu ada (lihat .ferr di CSS) supaya tombol tidak bergeser saat galat muncul.
+    var custErr = function (k, msg) {
+      var el = custForm.elements[k], slot = $("#" + el.id + "Err");
+      slot.textContent = msg;
+      if (msg) el.setAttribute("aria-invalid", "true"); else el.removeAttribute("aria-invalid");
+    };
+    var saved = loadCustomer();
+    CUST_FIELDS.forEach(function (k) { if (typeof saved[k] === "string") custForm.elements[k].value = saved[k]; });
+    custForm.addEventListener("focusout", function (e) {
+      var k = e.target.name; if (!CUST_RULES[k]) return;
+      custErr(k, CUST_RULES[k](custVal(k)));
+      try { localStorage.setItem("agx-customer", JSON.stringify(custValues())); } catch (e2) {}
+    });
+    var custClear = function (e) {
+      var k = e.target.name; if (!CUST_RULES[k]) return;
+      custErr(k, ""); $("#cartErr").textContent = "";
+    };
+    custForm.addEventListener("focusin", custClear);
+    custForm.addEventListener("input", custClear);
+    custForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var c = custValues();
+      var bad = CUST_FIELDS.filter(function (k) { return CUST_RULES[k](c[k]); });
+      if (bad.length) {
+        var first = custForm.elements[bad[0]];
+        first.focus(); first.scrollIntoView({ block: "nearest" });
+        CUST_FIELDS.forEach(function (k) { custErr(k, CUST_RULES[k](c[k])); });
+        $("#cartErr").textContent = bad.length >= 3 ? bad.length + " isian perlu dilengkapi." : "";
+        return;
+      }
+      var msg = orderMessage(c);
+      if (!msg) return;
+      $("#cartErr").textContent = "";
+      try { localStorage.setItem("agx-customer", JSON.stringify(c)); } catch (e2) {}
+      window.open(waLink(msg), "_blank", "noopener");
+    });
   }
 
   /* ---------- kartu produk ---------- */
@@ -228,7 +291,8 @@
       '<div class="buy">' +
       (out ? "" : '<span class="qty"><button type="button" id="qMinus" aria-label="Kurangi jumlah">−</button><output id="qVal">1</output><button type="button" id="qPlus" aria-label="Tambah jumlah">+</button></span>' +
         '<button type="button" class="btn btn-forest" id="pdAdd">' + icon("i-cart") + "Tambah ke keranjang</button>") +
-      '<a class="btn btn-line" target="_blank" rel="noopener" href="' + esc(waLink("Halo AgriXentris Nusantara, saya ingin memesan " + p.name + ". Apakah tersedia?")) + '">' + icon("i-wa") + "Pesan via WhatsApp</a></div></div></div>" +
+      (out ? '<a class="btn btn-line" target="_blank" rel="noopener" href="' + esc(waLink("Halo AgriXentris Nusantara, kapan " + p.name + " tersedia lagi?")) + '">' + icon("i-wa") + "Tanya stok via WhatsApp</a>"
+        : '<button type="button" class="btn btn-line" id="pdOrder">' + icon("i-wa") + "Pesan via WhatsApp</button>") + "</div></div></div>" +
       (related.length ? '<div class="sec-head" style="margin-top:56px"><h2 class="sec-title">Produk lainnya</h2><a class="link-more" href="/produk">Lihat semua produk' + icon("i-arrow") + '</a></div><div class="pgrid">' + related.map(card).join("") + "</div>" : "");
     var q = 1;
     el.addEventListener("click", function (e) {
@@ -241,6 +305,7 @@
       if (e.target.closest("#qMinus")) { q = Math.max(1, q - 1); $("#qVal").textContent = q; }
       if (e.target.closest("#qPlus")) { q = Math.min(999, q + 1); $("#qVal").textContent = q; }
       if (e.target.closest("#pdAdd")) addToCart(p.id, q);
+      if (e.target.closest("#pdOrder")) { if (!cart[p.id]) setQty(p.id, q); openCart(); }
     });
   }
   function renderProduk() {
@@ -328,7 +393,7 @@
     if (gb) { openLightbox(Number(gb.getAttribute("data-g"))); return; }
     var rm = e.target.closest("[data-rm]");
     if (rm) { setQty(rm.getAttribute("data-rm"), 0); return; }
-    if (e.target.closest("#cartBtn")) { renderCart(); $("#cartDrawer").showModal(); return; }
+    if (e.target.closest("#cartBtn")) { openCart(); return; }
     if (e.target.closest("#cartClose")) { $("#cartDrawer").close(); return; }
     if (e.target.closest("#menuBtn")) {
       var open = $("#nav").classList.toggle("open");
