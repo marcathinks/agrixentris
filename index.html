@@ -244,11 +244,19 @@
   <div class="drawer-in">
     <div class="drawer-head"><h2 id="cartTitle">Keranjang</h2><button type="button" class="icon-btn" id="cartClose" aria-label="Tutup keranjang"><svg aria-hidden="true"><use href="#i-x"/></svg></button></div>
     <div class="drawer-body" id="cartBody"></div>
-    <div class="drawer-foot" id="cartFoot" hidden>
+    <form class="drawer-foot" id="cartFoot" hidden novalidate>
       <div class="total"><span>Total</span><span id="cartTotal"></span></div>
-      <a class="btn btn-forest" id="cartCheckout" target="_blank" rel="noopener" href="#"><svg aria-hidden="true"><use href="#i-wa"/></svg>Pesan via WhatsApp</a>
-      <p class="muted" style="font-size:.9rem">Pesanan dikirim sebagai pesan WhatsApp. Pembayaran dan pengiriman dikonfirmasi oleh tim kami.</p>
-    </div>
+      <fieldset class="cust">
+        <legend>Data pemesan</legend>
+        <div class="fld"><label for="custNama">Nama lengkap</label><input class="field" id="custNama" name="nama" type="text" autocomplete="name" required aria-describedby="custNamaErr"><p class="ferr" id="custNamaErr" role="alert"></p></div>
+        <div class="fld"><label for="custHp">No. HP / WhatsApp</label><input class="field" id="custHp" name="hp" type="tel" inputmode="tel" autocomplete="tel" placeholder="0812 3456 7890" required aria-describedby="custHpErr"><p class="ferr" id="custHpErr" role="alert"></p></div>
+        <div class="fld"><label for="custEmail">Email</label><input class="field" id="custEmail" name="email" type="email" autocomplete="email" placeholder="nama@email.com" required aria-describedby="custEmailErr"><p class="ferr" id="custEmailErr" role="alert"></p></div>
+        <div class="fld"><label for="custAlamat">Alamat pengiriman</label><textarea class="field" id="custAlamat" name="alamat" rows="2" autocomplete="street-address" required aria-describedby="custAlamatErr"></textarea><p class="ferr" id="custAlamatErr" role="alert"></p></div>
+      </fieldset>
+      <p class="err" id="cartErr" role="alert"></p>
+      <button class="btn btn-forest" id="cartCheckout" type="submit"><svg aria-hidden="true"><use href="#i-wa"/></svg>Pesan via WhatsApp</button>
+      <p class="muted" style="font-size:.9rem">Data pemesan ikut terkirim di pesan WhatsApp. Pembayaran dan pengiriman dikonfirmasi oleh tim kami.</p>
+    </form>
   </div>
 </dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
