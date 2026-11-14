@@ -46,6 +46,7 @@
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.500v15l12-7.500-12-7.500Z" fill="currentColor"/></symbol>
 <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.500" y="5" width="17" height="15.500" rx="2.500" fill="none" stroke="currentColor" stroke-width="1.800"/><path d="M3.500 10h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.800" stroke-linecap="round"/></symbol>
 <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 12.500l9 5 9-5M3 17l9 5 9-5" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-handshake" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.500 2.500a1 1 0 1 0 3-3l-3.880-3.880a3 3 0 0 0-4.240 0l-.880.880a1 1 0 1 1-3-3l2.810-2.810a5.790 5.790 0 0 1 7.060-.870l.470.280a2 2 0 0 0 1.420.250L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.500 6.500a1 1 0 1 0 3-3"/><path d="M3 4h8"/></g></symbol>
 </defs></svg>
 <a class="sr" href="#main">Langsung ke isi</a>
 <header class="site-head">
@@ -72,25 +73,37 @@
 <main id="main">
 
 <section class="hero on-dark" aria-label="Pembuka">
-  <div class="hero-bg"><img id="heroImg" src="/assets/img/hero-greenhouse.webp" alt="" fetchpriority="high"></div>
+  <div class="hero-bg" id="heroBg">
+    <img id="heroImg" class="on" src="/assets/img/hero-greenhouse.webp" alt="" fetchpriority="high">
+    <img data-src="/assets/img/lahan-senja.webp" alt="">
+  </div>
   <div class="wrap hero-in">
-    <div>
+    <div class="hero-copy">
       <span class="tag">AgriXentris Nusantara</span>
       <h1>Solusi Pertanian Terintegrasi dari Hulu hingga Hilir</h1>
       <p class="lead">Meningkatkan produktivitas, efisiensi, dan keberlanjutan sektor pertanian melalui pendampingan profesional, teknologi pertanian, dan penyediaan sarana produksi berkualitas.</p>
       <div class="hero-cta">
         <a class="btn btn-lime" href="/produk"><svg aria-hidden="true"><use href="#i-cart"/></svg>Jelajahi Produk</a>
-        <a class="btn btn-ghost js-wa" target="_blank" rel="noopener" data-msg="Halo AgriXentris Nusantara, saya ingin meminta penawaran." href="https://wa.me/6289607718976?text=Halo%20AgriXentris%20Nusantara%2C%20saya%20ingin%20meminta%20penawaran."><svg aria-hidden="true"><use href="#i-wa"/></svg>Minta Penawaran</a>
+        <a class="btn btn-ghost js-wa" target="_blank" rel="noopener" data-msg="Halo AgriXentris Nusantara, saya ingin meminta penawaran." href="https://wa.me/6289607718976?text=Halo%20AgriXentris%20Nusantara%2C%20saya%20ingin%20meminta%20penawaran."><svg aria-hidden="true"><use href="#i-handshake"/></svg>Minta Penawaran</a>
       </div>
+      <ul class="hero-points" aria-label="Keunggulan">
+        <li><svg aria-hidden="true"><use href="#i-leaf"/></svg><span>Produk<br>Berkualitas</span></li>
+        <li><svg aria-hidden="true"><use href="#i-gear"/></svg><span>Dukungan<br>Teknis Profesional</span></li>
+        <li><svg aria-hidden="true"><use href="#i-shield"/></svg><span>Solusi<br>Berkelanjutan</span></li>
+      </ul>
     </div>
     <div class="capsule vision-card">
       <h2><svg aria-hidden="true"><use href="#i-target"/></svg>Visi Kami</h2>
       <p>Menjadi perusahaan agribisnis terintegrasi terkemuka di Indonesia yang inovatif, berkelanjutan, dan memberikan nilai tambah nyata bagi petani, investor, dan industri pangan.</p>
     </div>
   </div>
+  <div class="hero-dots" id="heroDots" role="group" aria-label="Pilih foto latar">
+    <button type="button" aria-label="Foto latar 1" aria-current="true"></button>
+    <button type="button" aria-label="Foto latar 2" aria-current="false"></button>
+  </div>
 </section>
 
-<section style="padding-bottom:0">
+<section class="after-hero" style="padding-bottom:0">
   <div class="wrap">
     <ul class="strip values" aria-label="Nilai perusahaan">
       <li class="lead-cell"><svg aria-hidden="true"><use href="#i-leaf"/></svg><div>Core Values <span>AgriXentris</span></div></li>
@@ -103,7 +116,7 @@
   </div>
 </section>
 
-<section style="padding-bottom:0">
+<section class="after-strip" style="padding-bottom:0">
   <div class="wrap"><h2 class="sr">Kategori</h2><div class="cats" id="catsGrid">
     <a class="cat" href="/produk?k=benih"><svg aria-hidden="true"><use href="#i-sprout"/></svg><b>Benih Cabai Hias</b></a>
     <a class="cat" href="/produk?k=tanaman"><svg aria-hidden="true"><use href="#i-pot"/></svg><b>Starter Pack &amp; Tanaman</b></a>
