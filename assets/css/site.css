@@ -286,7 +286,6 @@ textarea.field{min-height:120px; resize:vertical}
 .video .play i{width:84px; height:84px; border-radius:50%; background:var(--lime); display:grid; place-items:center}
 .video .play i svg{width:34px; height:34px; color:var(--lime-ink); margin-left:5px}
 a.play{text-decoration:none}
-.video .play small{margin-top:-8px; font:500 .92rem var(--body); color:#DFF5B4}
 .video-sec[hidden]{display:none}
 
 /* testimoni di atas foto */
