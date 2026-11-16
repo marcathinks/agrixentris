@@ -3,7 +3,7 @@
 (function () {
   "use strict";
 
-  var DEFAULT_HERO = "assets/img/hero-greenhouse.webp";
+  var DEFAULT_HERO = "assets/img/hero-greenhouse-dalam-2400.webp";
   var token = null, head = null, published = "", draft = null;
   var pending = {};   // path foto baru -> sha blob di GitHub
   var previews = {};  // path foto baru -> URL pratinjau lokal
@@ -81,10 +81,10 @@
   }
 
   /* ---------- foto ---------- */
-  function shrink(file) {
+  function shrink(file, maxSide) {
     if (!window.createImageBitmap) return Promise.reject(new Error("Browser ini tidak bisa memproses foto. Gunakan Chrome atau Edge terbaru."));
     return createImageBitmap(file).then(function (bmp) {
-      var max = 1600, sc = Math.min(1, max / Math.max(bmp.width, bmp.height));
+      var max = maxSide || 1600, sc = Math.min(1, max / Math.max(bmp.width, bmp.height));
       var c = document.createElement("canvas"); c.width = Math.round(bmp.width * sc); c.height = Math.round(bmp.height * sc);
       c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
       return new Promise(function (res, rej) {
@@ -102,15 +102,15 @@
       fr.readAsDataURL(blob);
     });
   }
-  function upload(file) {
-    return shrink(file).then(function (blob) {
+  function upload(file, maxSide) {
+    return shrink(file, maxSide).then(function (blob) {
       return toBase64(blob).then(function (b64) { return api("/api/blob", { content: b64 }); }).then(function (j) {
         pending[j.path] = j.sha; previews[j.path] = URL.createObjectURL(blob); return j.path;
       });
     });
   }
-  function uploadMany(files, each) {
-    return files.reduce(function (pr, f) { return pr.then(function () { return upload(f).then(each); }); }, Promise.resolve())
+  function uploadMany(files, each, maxSide) {
+    return files.reduce(function (pr, f) { return pr.then(function () { return upload(f, maxSide).then(each); }); }, Promise.resolve())
       .catch(function (e) { if (!handleAuthError(e)) toast(e.message); });
   }
   function usedPaths(d) {
@@ -256,7 +256,8 @@
       uploadMany(files, function (p) { draft.gallery.push({ image: p, caption: "" }); }).then(render);
     } else if (t.id === "heroInput") {
       t.parentNode.firstChild.textContent = "Mengunggah…"; t.disabled = true;
-      uploadMany(files.slice(0, 1), function (p) { draft.settings.hero = p; }).then(function () { render(); videoHint(); });
+      // Foto utama beranda tampil selebar layar, jadi disimpan lebih besar (2400 px).
+      uploadMany(files.slice(0, 1), function (p) { draft.settings.hero = p; }, 2400).then(function () { render(); videoHint(); });
     }
   });
   $("#panel").addEventListener("input", function (e) {
