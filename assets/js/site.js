@@ -165,7 +165,9 @@
   /* ---------- beranda ---------- */
   function renderHome() {
     var s = data.settings || {};
-    if (s.hero && $("#heroImg")) $("#heroImg").src = src(s.hero);
+    // Foto bawaan punya srcset (1280/2400 px). Foto pilihan admin dipakai apa adanya.
+    var hi = $("#heroImg");
+    if (s.hero && hi && src(s.hero) !== hi.getAttribute("src")) { hi.removeAttribute("srcset"); hi.src = src(s.hero); }
     var counts = {};
     data.products.forEach(function (p) { counts[p.catalog] = (counts[p.catalog] || 0) + 1; });
     var cats = $("#catsGrid");
@@ -188,7 +190,11 @@
     if (!hero || slides.length < 2) return;
     var cur = 0, timer = null, hold = false;
     var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    function load(im) { var d = im.getAttribute("data-src"); if (d) { im.src = d; im.removeAttribute("data-src"); } }
+    function load(im) {
+      var ss = im.getAttribute("data-srcset"), d = im.getAttribute("data-src");
+      if (ss) { im.srcset = ss; im.removeAttribute("data-srcset"); }
+      if (d) { im.src = d; im.removeAttribute("data-src"); }
+    }
     function go(n) {
       cur = (n + slides.length) % slides.length;
       load(slides[cur]);
@@ -213,6 +219,19 @@
     document.addEventListener("visibilitychange", start);
     function warm() { load(slides[1]); start(); }
     if (document.readyState === "complete") warm(); else window.addEventListener("load", warm);
+  }
+
+  /* ---------- nilai perusahaan: muncul bergantian saat discroll ---------- */
+  function initValues() {
+    var strip = $(".values");
+    if (!strip || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    $$("li", strip).forEach(function (li, i) { li.style.setProperty("--i", i); });
+    strip.classList.add("reveal");
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { strip.classList.add("in"); io.disconnect(); } });
+    }, { threshold: 0.35 });
+    io.observe(strip);
   }
 
   /* ---------- video ---------- */
@@ -433,6 +452,7 @@
 
   var yr = $("#yr"); if (yr) yr.textContent = new Date().getFullYear();
   initHero();
+  initValues();
   renderCart();
 
   fetch("/data/site.json", { cache: "no-cache" })
