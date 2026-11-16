@@ -10,12 +10,14 @@ Situs perusahaan dan katalog produk CV AgriXentris Nusantara. Situs statis (HTML
 | Tampilan dan perilaku | `assets/css/`, `assets/js/` |
 | Data produk, katalog, galeri, pengaturan | `data/site.json` |
 | Foto yang diunggah lewat admin | `uploads/` |
-| API panel admin (fungsi Vercel) | `api/` |
+| API panel admin | `api/` (dijalankan oleh `worker/index.js`) |
 | Server pratinjau lokal | `tools/dev-server.js` |
 
 Header dan footer ditulis di setiap file HTML. Jika mengubah menu, ubah di semua halaman.
 
 ## Deploy ke Cloudflare Workers
+
+Situs tayang di https://agrixentrisnusantara.com (domain dikelola di Rumahweb, nameserver diarahkan ke Cloudflare).
 
 Situs berjalan di Cloudflare Workers paket gratis, yang boleh dipakai untuk situs komersial. Halaman, gambar, dan data disajikan langsung oleh Cloudflare tanpa batas. Hanya panel admin (`/api/*`) yang menjalankan kode di `worker/index.js`, dengan jatah 100.000 permintaan per hari.
 
@@ -42,8 +44,6 @@ Konfigurasi ada di `wrangler.jsonc`. File yang tidak ikut tampil di situs didaft
 3. Buka `https://domain-anda/admin` dan masuk dengan `ADMIN_PASSWORD`.
 
 Cara kerja: setiap kali admin menekan **Terbitkan perubahan**, panel membuat satu commit berisi `data/site.json` dan foto baru. Cloudflare lalu menerbitkan ulang situs secara otomatis, biasanya sekitar 1 menit.
-
-Situs juga masih bisa di-deploy ke Vercel (`vercel.json` dan folder `api/`). Paket gratis Vercel hanya untuk penggunaan nonkomersial.
 
 ## Mengelola konten
 

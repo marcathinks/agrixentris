@@ -1,5 +1,5 @@
 // Server pratinjau lokal: node tools/dev-server.js  lalu buka http://localhost:3000
-// Meniru Vercel (URL tanpa .html, folder /api) dan memakai GitHub tiruan yang menulis ke folder ini,
+// Meniru situs live (URL tanpa .html, folder /api) dan memakai GitHub tiruan yang menulis ke folder ini,
 // sehingga panel admin bisa dicoba tanpa token. Kata sandi lokal: admin-lokal
 const http = require("http"), fs = require("fs"), path = require("path"), crypto = require("crypto");
 const ROOT = path.join(__dirname, ".."), PORT = Number(process.env.PORT || 3000);

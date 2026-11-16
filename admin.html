@@ -30,11 +30,11 @@
 <main class="login" id="setupView" hidden>
   <div class="a-card setup">
     <h1>Panel admin belum dikonfigurasi</h1>
-    <p class="muted" style="margin-top:8px">Variabel berikut belum diisi di Vercel: <strong id="missingVars"></strong></p>
+    <p class="muted" style="margin-top:8px">Kunci berikut belum diisi di Cloudflare: <strong id="missingVars"></strong></p>
     <ol>
-      <li>Buka proyek di Vercel, lalu <strong>Settings → Environment Variables</strong>.</li>
-      <li>Tambahkan <code>ADMIN_PASSWORD</code> (kata sandi panel ini), <code>GITHUB_TOKEN</code> (fine-grained token dengan izin Contents: Read and write untuk repo situs), dan <code>GITHUB_REPO</code> (format <code>pemilik/nama-repo</code>).</li>
-      <li>Buka tab <strong>Deployments</strong>, pilih deployment terbaru, lalu <strong>Redeploy</strong>.</li>
+      <li>Buka Worker <code>agrixentris</code> di dashboard Cloudflare, lalu <strong>Settings → Variables and Secrets → Add</strong>.</li>
+      <li>Tambahkan bertipe <strong>Secret</strong>: <code>ADMIN_PASSWORD</code> (kata sandi panel ini) dan <code>GITHUB_TOKEN</code> (fine-grained token dengan izin Contents: Read and write untuk repo situs).</li>
+      <li>Klik <strong>Deploy</strong>, lalu muat ulang halaman ini.</li>
     </ol>
     <p style="margin-top:14px">Langkah lengkap ada di README repo.</p>
   </div>
