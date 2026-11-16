@@ -250,6 +250,7 @@
     $$(".video-sec").forEach(function (sec) {
       sec.hidden = !embed && !drive;
       var btn = $(".play", sec); if (!btn) return;
+      if (embed || drive) playClip(sec);
       if (drive) {
         var a = document.createElement("a");
         a.className = btn.className; a.href = drive; a.target = "_blank"; a.rel = "noopener";
@@ -260,11 +261,31 @@
       if (!embed) return;
       btn.addEventListener("click", function () {
         var f = document.createElement("iframe");
+        var clip = $(".video-clip", sec); if (clip) clip.remove();
         f.src = embed; f.title = "Video profil AgriXentris Nusantara";
         f.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen"; f.allowFullscreen = true;
         btn.parentNode.appendChild(f); btn.remove();
       });
     });
+  }
+
+  // Cuplikan tanpa suara (sekitar 14 detik, 2,8 MB) diputar berulang di belakang tombol video.
+  // Baru diunduh saat bagian video terlihat, berhenti saat discroll lewat,
+  // dan tidak diputar bila pengunjung memilih kurangi gerakan (yang tampil gambar sampulnya).
+  function playClip(sec) {
+    var v = $(".video-clip", sec);
+    if (!v || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!v.isConnected) return;
+        if (e.isIntersecting) {
+          var d = v.getAttribute("data-src");
+          if (d) { v.src = d; v.removeAttribute("data-src"); }
+          var pr = v.play(); if (pr && pr.catch) pr.catch(function () {});
+        } else v.pause();
+      });
+    }, { threshold: 0.25 }).observe(v);
   }
 
   /* ---------- katalog & detail ---------- */
