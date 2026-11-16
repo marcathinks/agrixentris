@@ -95,8 +95,8 @@
     },
     {
       "id": "p-tanaman",
-      "slug": "tanaman-cabai-hias-ornamental",
-      "name": "Tanaman Cabai Hias Ornamental",
+      "slug": "tanaman-cabai-hias-triwarsana-ipb",
+      "name": "Tanaman cabai hias triwarsana IPB",
       "catalog": "tanaman",
       "subtitle": "Tanaman cabai hias dalam pot, siap pajang.",
       "price": 150000,
@@ -104,7 +104,7 @@
       "desc": "",
       "specs": "",
       "images": [
-        "assets/img/produk/tanaman-cabai-hias.svg"
+        "uploads/949ed60831d95600.webp"
       ],
       "available": true,
       "featured": false,
