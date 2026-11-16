@@ -15,32 +15,35 @@ Situs perusahaan dan katalog produk CV AgriXentris Nusantara. Situs statis (HTML
 
 Header dan footer ditulis di setiap file HTML. Jika mengubah menu, ubah di semua halaman.
 
-## Deploy ke Vercel
+## Deploy ke Cloudflare Workers
 
-1. Push repo ini ke GitHub.
-2. Di vercel.com pilih **Add New → Project**, lalu **Import** repo ini.
-3. Framework Preset: **Other**. Kosongkan Build Command dan Output Directory. Klik **Deploy**.
+Situs berjalan di Cloudflare Workers paket gratis, yang boleh dipakai untuk situs komersial. Halaman, gambar, dan data disajikan langsung oleh Cloudflare tanpa batas. Hanya panel admin (`/api/*`) yang menjalankan kode di `worker/index.js`, dengan jatah 100.000 permintaan per hari.
 
-Situs publik langsung jalan. Panel admin perlu tiga variabel di langkah berikut.
+Konfigurasi ada di `wrangler.jsonc`. File yang tidak ikut tampil di situs didaftarkan di `.assetsignore`, dan header HTTP untuk halaman serta gambar ada di `_headers`.
+
+1. Di dash.cloudflare.com buka **Workers & Pages**, pilih **Create application**, lalu **GitHub**, dan pilih repo ini.
+2. Nama proyek harus `agrixentris`, sama dengan `name` di `wrangler.jsonc`. Build command dikosongkan, deploy command biarkan `npx wrangler deploy`. Klik **Deploy**.
+3. Setiap push ke branch `main`, termasuk setiap kali admin menerbitkan perubahan, membuat Cloudflare men-deploy ulang otomatis.
+
+`GITHUB_REPO` dan `GITHUB_BRANCH` sudah diatur di `wrangler.jsonc`.
 
 ## Mengaktifkan panel admin
 
 1. Di GitHub buka **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**.
    - Repository access: **Only select repositories**, pilih repo ini.
    - Permissions → Repository permissions → **Contents: Read and write**.
-2. Di Vercel buka proyek → **Settings → Environment Variables**, tambahkan:
+2. Di Cloudflare buka Worker `agrixentris` → **Settings → Variables and Secrets**, tambahkan dua variabel bertipe **Secret**:
 
 | Nama | Isi |
 | --- | --- |
 | `ADMIN_PASSWORD` | Kata sandi panel admin. Buat yang panjang dan tidak dipakai di tempat lain. |
 | `GITHUB_TOKEN` | Token dari langkah 1. |
-| `GITHUB_REPO` | `pemilik/nama-repo`, contoh `agrixentris/agrixentris-web`. |
-| `GITHUB_BRANCH` | Opsional. Bawaan `main`. |
 
-3. Buka **Deployments**, pilih deployment terbaru, klik **Redeploy**.
-4. Buka `https://domain-anda/admin` dan masuk dengan `ADMIN_PASSWORD`.
+3. Buka `https://domain-anda/admin` dan masuk dengan `ADMIN_PASSWORD`.
 
-Cara kerja: setiap kali admin menekan **Terbitkan perubahan**, panel membuat satu commit berisi `data/site.json` dan foto baru. Vercel lalu menerbitkan ulang situs secara otomatis, biasanya sekitar 1 menit.
+Cara kerja: setiap kali admin menekan **Terbitkan perubahan**, panel membuat satu commit berisi `data/site.json` dan foto baru. Cloudflare lalu menerbitkan ulang situs secara otomatis, biasanya sekitar 1 menit.
+
+Situs juga masih bisa di-deploy ke Vercel (`vercel.json` dan folder `api/`). Paket gratis Vercel hanya untuk penggunaan nonkomersial.
 
 ## Mengelola konten
 
@@ -59,8 +62,9 @@ node tools/dev-server.js
 
 Buka `http://localhost:3000`. Panel admin lokal ada di `/admin` dengan kata sandi `admin-lokal`, dan perubahan ditulis ke folder ini, bukan ke GitHub.
 
+Untuk menguji persis seperti di Cloudflare, jalankan `npx wrangler dev` lalu buka `http://localhost:8787`. Kata sandi dan token untuk pengujian ini diisi di file `.dev.vars` (jangan di-commit).
+
 ## Catatan
 
 - Gambar produk di `assets/img/produk/` adalah ilustrasi sementara. Ganti dengan foto asli lewat panel admin.
 - Foto lahan dan greenhouse di `assets/img/` diambil dari company profile. Pastikan perusahaan berhak memakainya, atau ganti dengan foto kegiatan sendiri.
-- Paket Hobby Vercel hanya untuk penggunaan nonkomersial. Untuk situs perusahaan, cek ketentuan paket Vercel.

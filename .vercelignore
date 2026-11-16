@@ -1,2 +1,6 @@
 tools
 README.md
+worker
+wrangler.jsonc
+_headers
+.assetsignore

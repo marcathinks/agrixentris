@@ -1,8 +1,10 @@
 // Fungsi bersama untuk API admin. File berawalan garis bawah tidak dijadikan endpoint oleh Vercel.
+// Dipakai oleh Vercel (folder api/), Cloudflare Workers (worker/index.js), dan tools/dev-server.js.
 const crypto = require("crypto");
 
-const API = process.env.GITHUB_API_URL || "https://api.github.com";
-const BRANCH = process.env.GITHUB_BRANCH || "main";
+// Dibaca saat dipakai, bukan saat file dimuat, karena Cloudflare mengisi variabel per permintaan.
+const apiUrl = () => process.env.GITHUB_API_URL || "https://api.github.com";
+const branch = () => process.env.GITHUB_BRANCH || "main";
 const DATA_PATH = "data/site.json";
 const SESSION_HOURS = 12;
 
@@ -58,7 +60,7 @@ function fail(status, code, publicMessage) {
 }
 
 async function gh(method, path, body) {
-  const r = await fetch(API + "/repos/" + process.env.GITHUB_REPO + path, {
+  const r = await fetch(apiUrl() + "/repos/" + process.env.GITHUB_REPO + path, {
     method,
     headers: {
       Authorization: "Bearer " + process.env.GITHUB_TOKEN,
@@ -81,8 +83,8 @@ async function gh(method, path, body) {
   return json;
 }
 async function headSha() {
-  const ref = await gh("GET", "/git/ref/heads/" + BRANCH);
+  const ref = await gh("GET", "/git/ref/heads/" + branch());
   return ref.object.sha;
 }
 
-module.exports = { handler, fail, gh, headSha, makeToken, checkPassword, BRANCH, DATA_PATH };
+module.exports = { handler, fail, gh, headSha, makeToken, checkPassword, branch, DATA_PATH };
