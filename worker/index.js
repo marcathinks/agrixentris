@@ -46,6 +46,35 @@ async function runHandler(fn, request, body) {
   return json(out.status, out.body == null ? {} : out.body, out.headers);
 }
 
+// Penyajian file statis Workers mengabaikan header Range dan selalu mengirim file utuh (200).
+// Safari (iPhone, iPad, Mac) hanya mau memutar video bila server bisa mengirim potongan file (206),
+// jadi video di assets/video/ disajikan lewat sini.
+async function serveVideo(request, env, url) {
+  if (request.method !== "GET" && request.method !== "HEAD") return new Response(null, { status: 405 });
+  const asset = await env.ASSETS.fetch(new Request(url.toString(), { method: "GET" }));
+  if (!asset.ok) return asset;
+  const headers = new Headers(asset.headers);
+  headers.set("Accept-Ranges", "bytes");
+  for (const [k, v] of Object.entries(SECURITY_HEADERS)) headers.set(k, v);
+  const range = request.headers.get("range");
+  const head = request.method === "HEAD";
+  if (!range) return new Response(head ? null : asset.body, { status: 200, headers });
+
+  const buf = await asset.arrayBuffer();
+  const size = buf.byteLength;
+  const m = /^bytes=(\d*)-(\d*)$/.exec(range.trim());
+  let start, end;
+  if (m && m[1] !== "") { start = Number(m[1]); end = m[2] !== "" ? Math.min(Number(m[2]), size - 1) : size - 1; }
+  else if (m && m[2] !== "") { start = Math.max(size - Number(m[2]), 0); end = size - 1; }
+  if (start === undefined || !(start <= end) || start >= size) {
+    headers.set("Content-Range", "bytes */" + size); headers.delete("Content-Length");
+    return new Response(null, { status: 416, headers });
+  }
+  headers.set("Content-Range", "bytes " + start + "-" + end + "/" + size);
+  headers.set("Content-Length", String(end - start + 1));
+  return new Response(head ? null : buf.slice(start, end + 1), { status: 206, headers });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -56,6 +85,7 @@ export default {
       const r = await env.ASSETS.fetch(new Request(new URL(url.pathname.slice(0, -5), url), request));
       return new Response(r.body, { status: r.status, headers: { "Content-Type": "text/html; charset=utf-8", ...SECURITY_HEADERS } });
     }
+    if (url.pathname.startsWith("/assets/video/")) return serveVideo(request, env, url);
     if (!url.pathname.startsWith("/api/")) return env.ASSETS.fetch(request);
 
     // Variabel dan kunci rahasia Cloudflare diteruskan ke kode API yang membaca process.env.
