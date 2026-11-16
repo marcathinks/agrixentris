@@ -50,3 +50,4 @@ body.admin{background:var(--soft)}
 .gitem:first-child{border-top:0}
 .gitem img{width:104px; height:78px; object-fit:cover; border-radius:10px; background:var(--soft)}
 @media (max-width:640px){ .fg .two{grid-template-columns:1fr} .a-list li{grid-template-columns:52px 1fr} .a-list .acts{grid-column:1/-1; justify-content:flex-start} .th{width:52px; height:52px} .gitem{grid-template-columns:84px 1fr} .gitem .acts{grid-column:1/-1; justify-content:flex-start} .gitem img{width:84px; height:64px} }
+.a-bar .st.err{color:#A32015}
