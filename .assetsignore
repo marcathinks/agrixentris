@@ -1,0 +1,19 @@
+# File yang tidak ikut diunggah sebagai bagian situs publik di Cloudflare.
+# Formatnya sama dengan .gitignore.
+.git
+.github
+.wrangler
+.dev.vars*
+node_modules
+.DS_Store
+.gitignore
+.assetsignore
+.vercelignore
+vercel.json
+wrangler.jsonc
+package.json
+package-lock.json
+README.md
+api/
+worker/
+tools/

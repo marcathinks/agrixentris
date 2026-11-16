@@ -1,4 +1,4 @@
-const { handler, fail, gh, headSha, BRANCH, DATA_PATH } = require("./_lib.js");
+const { handler, fail, gh, headSha, branch, DATA_PATH } = require("./_lib.js");
 
 const UPLOAD_RE = /^uploads\/[a-f0-9]{16}\.(webp|jpg|png)$/;
 const SHA_RE = /^[a-f0-9]{40}$/;
@@ -42,7 +42,7 @@ module.exports = handler("POST", true, async (req, res) => {
     parents: [head],
   });
   try {
-    await gh("PATCH", "/git/refs/heads/" + BRANCH, { sha: newCommit.sha, force: false });
+    await gh("PATCH", "/git/refs/heads/" + branch(), { sha: newCommit.sha, force: false });
   } catch (e) {
     if (e.ghStatus === 422) throw fail(409, "conflict", "Data di situs berubah saat menyimpan. Muat ulang panel lalu ulangi perubahan.");
     throw e;
