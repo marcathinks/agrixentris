@@ -235,18 +235,29 @@
   }
 
   /* ---------- video ---------- */
-  function videoEmbed(url) {
+  // YouTube diputar di dalam halaman. Google Drive dibuka di tab baru lewat tombol "Tonton Video Full",
+  // karena video besar di Drive tidak bisa diputar otomatis dan pemutarnya lambat bila ditanam.
+  function youtubeEmbed(url) {
     var m = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/.exec(url || "");
-    if (m) return "https://www.youtube-nocookie.com/embed/" + m[1] + "?autoplay=1&rel=0";
-    m = /drive\.google\.com\/file\/d\/([\w-]{10,})/.exec(url || "");
-    if (m) return "https://drive.google.com/file/d/" + m[1] + "/preview";
-    return null;
+    return m ? "https://www.youtube-nocookie.com/embed/" + m[1] + "?autoplay=1&rel=0" : null;
+  }
+  function driveLink(url) {
+    var m = /drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]{10,})/.exec(url || "");
+    return m ? "https://drive.google.com/file/d/" + m[1] + "/view" : null;
   }
   function renderVideo() {
-    var embed = videoEmbed(data.settings && data.settings.video);
+    var url = data.settings && data.settings.video, embed = youtubeEmbed(url), drive = driveLink(url);
     $$(".video-sec").forEach(function (sec) {
-      sec.hidden = !embed;
-      var btn = $(".play", sec); if (!btn || !embed) return;
+      sec.hidden = !embed && !drive;
+      var btn = $(".play", sec); if (!btn) return;
+      if (drive) {
+        var a = document.createElement("a");
+        a.className = btn.className; a.href = drive; a.target = "_blank"; a.rel = "noopener";
+        a.innerHTML = "<i>" + icon("i-play") + "</i><span>Tonton Video Full</span><small>Dibuka di Google Drive</small>";
+        btn.replaceWith(a);
+        return;
+      }
+      if (!embed) return;
       btn.addEventListener("click", function () {
         var f = document.createElement("iframe");
         f.src = embed; f.title = "Video profil AgriXentris Nusantara";
