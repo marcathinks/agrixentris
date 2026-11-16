@@ -87,7 +87,7 @@
       "desc": "Paket lengkap untuk mulai menanam cabai hias di rumah.",
       "specs": "Benih: 3 varian (Triwarsana, Ayesha, Nazla)\nMedia tanam: premium\nPupuk: AB mix 100 ml\nPot tanam: diameter 10 cm\nPanduan: panduan budidaya",
       "images": [
-        "assets/img/produk/starter-pack.svg"
+        "uploads/8130e2f5bc61d713.webp"
       ],
       "available": true,
       "featured": true,
@@ -122,6 +122,23 @@
       "specs": "Isi bersih: 100 ml per botol\nKomposisi paket: Pupuk A dan Pupuk B",
       "images": [
         "uploads/ab4717b708029ed6.webp"
+      ],
+      "available": true,
+      "featured": false,
+      "badge": ""
+    },
+    {
+      "id": "p-media",
+      "slug": "media-tanam",
+      "name": "Media Tanam",
+      "catalog": "sarana",
+      "subtitle": "Campuran media tanam yang poros dan gembur, cocok untuk berbagai tanaman.",
+      "price": null,
+      "unit": "",
+      "desc": "Media tanam campuran dari AgriXentris Nusantara dengan formula seimbang: poros dan gembur, drainase baik, dan aman untuk tanaman. Cocok untuk cabai hias dan berbagai tanaman pot.",
+      "specs": "",
+      "images": [
+        "uploads/c04ce9be9ffd5a35.webp"
       ],
       "available": true,
       "featured": false,
