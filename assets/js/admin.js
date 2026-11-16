@@ -7,7 +7,7 @@
   var token = null, head = null, published = "", draft = null;
   var pending = {};   // path foto baru -> sha blob di GitHub
   var previews = {};  // path foto baru -> URL pratinjau lokal
-  var tab = "produk", editing = null, busy = false;
+  var tab = "produk", editing = null, busy = false, lastError = "";
 
   try { token = sessionStorage.getItem("agx-admin-token"); } catch (e) {}
 
@@ -69,15 +69,55 @@
     draft = null; logout("");
   });
 
+  function normalize(d) {
+    d.settings = d.settings || {}; d.catalogs = d.catalogs || []; d.products = d.products || []; d.gallery = d.gallery || [];
+    return d;
+  }
   function load() {
     return api("/api/data").then(function (j) {
       head = j.head;
-      var d = j.data;
-      d.settings = d.settings || {}; d.catalogs = d.catalogs || []; d.products = d.products || []; d.gallery = d.gallery || [];
-      published = JSON.stringify(d); draft = JSON.parse(published);
-      pending = {}; editing = null;
+      published = JSON.stringify(normalize(j.data)); draft = JSON.parse(published);
+      pending = {}; editing = null; lastError = "";
       show("appView"); render();
     });
+  }
+
+  /* ---------- menggabungkan perubahan dengan data terbaru ----------
+     Bila data di situs berubah sejak panel dibuka (misalnya ada pembaruan situs atau admin lain
+     menerbitkan), perubahan admin di panel ini diterapkan ulang di atas data terbaru,
+     per produk, katalog, foto galeri, dan pengaturan. Untuk item yang sama, versi admin yang dipakai. */
+  function same(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+  function mergeList(base, mine, latest, key) {
+    var bmap = {}, mmap = {}, lmap = {};
+    base.forEach(function (x) { bmap[key(x)] = x; });
+    mine.forEach(function (x) { mmap[key(x)] = x; });
+    latest.forEach(function (x) { lmap[key(x)] = x; });
+    var out = latest.filter(function (x) { var k = key(x); return !(bmap[k] && !mmap[k]); }) // yang dihapus admin ikut dihapus
+      .map(function (x) { var k = key(x); return bmap[k] && mmap[k] && !same(bmap[k], mmap[k]) ? mmap[k] : x; });
+    var reordered = !same(base.map(key).filter(function (k) { return mmap[k]; }), mine.map(key).filter(function (k) { return bmap[k]; }));
+    if (reordered) {
+      var extra = out.filter(function (x) { return !mmap[key(x)]; });
+      out = mine.filter(function (x) { var k = key(x); return lmap[k] || !bmap[k] || !same(bmap[k], x); })
+        .map(function (x) { var k = key(x); return bmap[k] && same(bmap[k], x) && lmap[k] ? lmap[k] : x; }).concat(extra);
+      return out;
+    }
+    mine.forEach(function (x, i) { // item baru (atau yang diubah admin tapi sudah terhapus di situs) disisipkan di posisi yang sama
+      var k = key(x);
+      if ((!bmap[k] || !lmap[k]) && !out.some(function (y) { return key(y) === k; })) out.splice(Math.min(i, out.length), 0, x);
+    });
+    return out;
+  }
+  function rebase(base, mine, latest) {
+    var out = JSON.parse(JSON.stringify(latest));
+    Object.keys(Object.assign({}, base.settings, mine.settings)).forEach(function (k) {
+      if (!same(base.settings[k], mine.settings[k])) {
+        if (mine.settings[k] === undefined) delete out.settings[k]; else out.settings[k] = mine.settings[k];
+      }
+    });
+    out.catalogs = mergeList(base.catalogs, mine.catalogs, latest.catalogs, function (c) { return c.id; });
+    out.products = mergeList(base.products, mine.products, latest.products, function (x) { return x.id; });
+    out.gallery = mergeList(base.gallery, mine.gallery, latest.gallery, function (g) { return g.image; });
+    return out;
   }
 
   /* ---------- foto ---------- */
@@ -133,8 +173,8 @@
   }
   function status() {
     var d = dirty(), st = $("#status");
-    st.textContent = busy ? "Menerbitkan…" : d ? "Ada perubahan yang belum diterbitkan." : "Semua perubahan sudah terbit.";
-    st.className = "st" + (d ? " dirty" : "");
+    st.textContent = busy ? "Menerbitkan…" : d && lastError ? "Belum terbit: " + lastError : d ? "Ada perubahan yang belum diterbitkan." : "Semua perubahan sudah terbit.";
+    st.className = "st" + (d ? " dirty" : "") + (d && lastError && !busy ? " err" : "");
     $("#publishBtn").disabled = !d || busy;
     $("#discardBtn").hidden = !d || busy;
   }
@@ -275,19 +315,44 @@
     if (!confirm("Batalkan semua perubahan yang belum diterbitkan?")) return;
     draft = JSON.parse(published); editing = null; render(); if (tab === "pengaturan") videoHint();
   });
-  $("#publishBtn").addEventListener("click", function () {
-    if (editing) { toast("Simpan atau batalkan produk yang sedang diubah terlebih dahulu."); return; }
+  function publish(merged) {
     var used = usedPaths(draft), before = usedPaths(JSON.parse(published));
     var files = Object.keys(pending).filter(function (p) { return used[p]; }).map(function (p) { return { path: p, sha: pending[p] }; });
     var remove = Object.keys(before).filter(function (p) { return !used[p] && p.indexOf("uploads/") === 0; });
-    busy = true; status();
-    api("/api/publish", { data: draft, files: files, remove: remove, base: head }).then(function (j) {
-      head = j.head; published = JSON.stringify(draft);
+    return api("/api/publish", { data: draft, files: files, remove: remove, base: head }).then(function (j) {
+      head = j.head; published = JSON.stringify(draft); lastError = "";
       files.forEach(function (f) { delete pending[f.path]; });
-      toast("Perubahan tersimpan. Situs diperbarui otomatis dalam sekitar 1 menit.");
-    }).catch(function (e) {
-      if (!handleAuthError(e)) toast(e.message);
+      toast(merged ? "Data di situs sempat berubah. Perubahan Anda sudah digabung dengan versi terbaru dan diterbitkan. Situs diperbarui dalam sekitar 1 menit."
+        : "Perubahan tersimpan. Situs diperbarui otomatis dalam sekitar 1 menit.");
+    }, function (e) {
+      if (e.code !== "conflict" || merged) throw e;
+      // Data di situs berubah sejak panel dibuka: ambil yang terbaru, terapkan ulang perubahan admin, lalu coba sekali lagi.
+      return api("/api/data").then(function (j) {
+        var latest = normalize(j.data);
+        draft = rebase(JSON.parse(published), draft, latest);
+        published = JSON.stringify(latest); head = j.head;
+        render();
+        return publish(true);
+      });
+    });
+  }
+  $("#publishBtn").addEventListener("click", function () {
+    if (editing) { toast("Simpan atau batalkan produk yang sedang diubah terlebih dahulu."); return; }
+    busy = true; lastError = ""; status();
+    publish(false).catch(function (e) {
+      if (!handleAuthError(e)) { lastError = e.message; toast(e.message); }
     }).then(function () { busy = false; if (draft) status(); });
+  });
+
+  // Saat tab panel dibuka lagi dan tidak ada perubahan yang belum terbit, muat data terbaru dari situs.
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState !== "visible" || !token || !draft || busy || editing || dirty()) return;
+    api("/api/data").then(function (j) {
+      if (j.head === head || busy || editing || dirty()) return;
+      head = j.head; published = JSON.stringify(normalize(j.data)); draft = JSON.parse(published);
+      render(); if (tab === "pengaturan") videoHint();
+      toast("Data terbaru dari situs sudah dimuat.");
+    }).catch(function (e) { handleAuthError(e); });
   });
   window.addEventListener("beforeunload", function (e) { if (dirty()) { e.preventDefault(); e.returnValue = ""; } });
 
