@@ -330,12 +330,13 @@
   }
 
   /* ---------- galeri ---------- */
+  // it.pos (opsional, mis. "50% 20%") mengatur bagian foto yang tampil di kotak galeri; foto penuh tetap tampil saat diperbesar.
   function renderGallery() {
     var g = $("#galleryGrid"); if (!g) return;
     var list = data.gallery || [];
     g.innerHTML = list.length ? list.map(function (it, i) {
       var alt = it.caption || "Foto kegiatan AgriXentris Nusantara";
-      return '<figure><button type="button" class="gbtn" data-g="' + i + '" aria-label="Perbesar foto: ' + esc(alt) + '"><img loading="lazy" alt="' + esc(alt) + '" src="' + esc(src(it.image)) + '"></button>' +
+      return '<figure><button type="button" class="gbtn" data-g="' + i + '" aria-label="Perbesar foto: ' + esc(alt) + '"><img loading="lazy" alt="' + esc(alt) + '"' + (/^\d{1,3}% \d{1,3}%$/.test(it.pos || "") ? ' style="object-position:' + it.pos + '"' : "") + ' src="' + esc(src(it.image)) + '"></button>' +
         (it.caption ? "<figcaption>" + esc(it.caption) + "</figcaption>" : "") + "</figure>";
     }).join("") : "";
     $("#gallerySec").hidden = !list.length;
