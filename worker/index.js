@@ -49,6 +49,13 @@ async function runHandler(fn, request, body) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    // File verifikasi Google Search Console (googleXXXX.html) harus terbuka langsung tanpa dialihkan.
+    // Penyajian bawaan mengalihkan /x.html ke /x, jadi file diambil lewat alamat tanpa .html.
+    const gsc = /^\/google[0-9a-f]+\.html$/.exec(url.pathname);
+    if (gsc) {
+      const r = await env.ASSETS.fetch(new Request(new URL(url.pathname.slice(0, -5), url), request));
+      return new Response(r.body, { status: r.status, headers: { "Content-Type": "text/html; charset=utf-8", ...SECURITY_HEADERS } });
+    }
     if (!url.pathname.startsWith("/api/")) return env.ASSETS.fetch(request);
 
     // Variabel dan kunci rahasia Cloudflare diteruskan ke kode API yang membaca process.env.
