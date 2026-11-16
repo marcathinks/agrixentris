@@ -10,7 +10,7 @@ function checkData(d) {
   return d.products.length <= 500 && d.catalogs.length <= 20;
 }
 
-// Menyimpan data situs dan foto baru dalam satu commit. Vercel lalu menerbitkan ulang situs.
+// Menyimpan data situs dan foto baru dalam satu commit. Cloudflare lalu menerbitkan ulang situs.
 module.exports = handler("POST", true, async (req, res) => {
   const body = req.body || {};
   if (!checkData(body.data)) throw fail(400, "bad_data", "Data situs tidak lengkap.");

@@ -1,7 +1,7 @@
 // Cloudflare Workers: menyajikan situs statis dan menjalankan API panel admin.
 // Halaman, gambar, dan data disajikan langsung oleh Cloudflare dari file di repo.
 // Hanya permintaan ke /api/* yang menjalankan kode ini (lihat run_worker_first di wrangler.jsonc).
-// Fungsi API-nya sama dengan yang dipakai Vercel dan tools/dev-server.js (folder api/).
+// Fungsi API-nya ada di folder api/ dan juga dipakai tools/dev-server.js.
 import process from "node:process";
 import login from "../api/login.js";
 import data from "../api/data.js";
@@ -33,7 +33,7 @@ async function readBody(request) {
   try { return text ? JSON.parse(text) : {}; } catch (e) { return {}; }
 }
 
-// Menjalankan fungsi bergaya Vercel (req, res) dengan Request/Response milik Workers.
+// Menjalankan fungsi bergaya (req, res) di folder api/ dengan Request/Response milik Workers.
 async function runHandler(fn, request, body) {
   const out = { status: 200, headers: {}, body: null };
   const req = { method: request.method, headers: Object.fromEntries(request.headers), body };

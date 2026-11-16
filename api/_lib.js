@@ -1,5 +1,4 @@
-// Fungsi bersama untuk API admin. File berawalan garis bawah tidak dijadikan endpoint oleh Vercel.
-// Dipakai oleh Vercel (folder api/), Cloudflare Workers (worker/index.js), dan tools/dev-server.js.
+// Fungsi bersama untuk API admin. Dipakai oleh Cloudflare Workers (worker/index.js) dan tools/dev-server.js.
 const crypto = require("crypto");
 
 // Dibaca saat dipakai, bukan saat file dimuat, karena Cloudflare mengisi variabel per permintaan.

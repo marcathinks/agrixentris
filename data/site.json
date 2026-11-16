@@ -33,7 +33,8 @@
       "desc": "Triwarsana IPB adalah cabai ornamental dengan buah beraneka warna (ungu, merah, oranye, kuning, krem) saat matang. Cocok untuk tanaman hias pot, dekorasi taman, dan koleksi. Mudah dirawat dan produktif.",
       "specs": "Isi: 25 benih\nVarietas: Triwarsana IPB\nWarna buah: ungu, merah, oranye, kuning, krem",
       "images": [
-        "assets/img/produk/triwarsana.svg"
+        "uploads/7d883560f1dd2d9c.webp",
+        "uploads/c4b77dc037f99dd5.webp"
       ],
       "available": true,
       "featured": true,
@@ -50,7 +51,8 @@
       "desc": "Nazla IPB adalah cabai ornamental dengan buah berwarna ungu mengkilap saat matang. Cocok untuk tanaman hias pot, penghias taman, dan dekorasi. Mudah dirawat dan berbuah produktif.",
       "specs": "Isi: 25 benih\nVarietas: Nazla IPB\nWarna buah: ungu mengkilap",
       "images": [
-        "assets/img/produk/nazla.svg"
+        "uploads/b382396c33d6c1b5.webp",
+        "uploads/0629bbd4835f2e34.webp"
       ],
       "available": true,
       "featured": true,
@@ -67,7 +69,8 @@
       "desc": "Ayesha IPB adalah cabai ornamental dengan buah beraneka warna (kuning, oranye, dan merah) saat matang. Cocok untuk tanaman hias pot, dekorasi taman, dan koleksi. Mudah dirawat dan produktif.",
       "specs": "Isi: 25 benih\nVarietas: Ayesha IPB\nWarna buah: kuning, oranye, merah",
       "images": [
-        "assets/img/produk/ayesha.svg"
+        "uploads/3d718c468d2c7fe7.webp",
+        "uploads/fc8a02fb2c343993.webp"
       ],
       "available": true,
       "featured": true,
@@ -84,7 +87,7 @@
       "desc": "Paket lengkap untuk mulai menanam cabai hias di rumah.",
       "specs": "Benih: 3 varian (Triwarsana, Ayesha, Nazla)\nMedia tanam: premium\nPupuk: AB mix 100 ml\nPot tanam: diameter 10 cm\nPanduan: panduan budidaya",
       "images": [
-        "assets/img/produk/starter-pack.svg"
+        "uploads/8130e2f5bc61d713.webp"
       ],
       "available": true,
       "featured": true,
@@ -102,6 +105,40 @@
       "specs": "",
       "images": [
         "assets/img/produk/tanaman-cabai-hias.svg"
+      ],
+      "available": true,
+      "featured": false,
+      "badge": ""
+    },
+    {
+      "id": "p-abmix",
+      "slug": "pupuk-ab-mix-nutrisi-tanaman",
+      "name": "Pupuk AB Mix Nutrisi Tanaman",
+      "catalog": "sarana",
+      "subtitle": "Pupuk A dan Pupuk B, masing-masing isi bersih 100 ml.",
+      "price": null,
+      "unit": "",
+      "desc": "Nutrisi tanaman AB Mix dari AgriXentris Nusantara, terdiri dari Pupuk A dan Pupuk B.",
+      "specs": "Isi bersih: 100 ml per botol\nKomposisi paket: Pupuk A dan Pupuk B",
+      "images": [
+        "uploads/ab4717b708029ed6.webp"
+      ],
+      "available": true,
+      "featured": false,
+      "badge": ""
+    },
+    {
+      "id": "p-media",
+      "slug": "media-tanam",
+      "name": "Media Tanam",
+      "catalog": "sarana",
+      "subtitle": "Campuran media tanam yang poros dan gembur, cocok untuk berbagai tanaman.",
+      "price": null,
+      "unit": "",
+      "desc": "Media tanam campuran dari AgriXentris Nusantara dengan formula seimbang: poros dan gembur, drainase baik, dan aman untuk tanaman. Cocok untuk cabai hias dan berbagai tanaman pot.",
+      "specs": "",
+      "images": [
+        "uploads/c04ce9be9ffd5a35.webp"
       ],
       "available": true,
       "featured": false,
