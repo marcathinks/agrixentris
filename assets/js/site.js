@@ -254,7 +254,7 @@
       if (drive) {
         var a = document.createElement("a");
         a.className = btn.className; a.href = drive; a.target = "_blank"; a.rel = "noopener";
-        a.innerHTML = "<i>" + icon("i-play") + "</i><span>Tonton Video Full</span><small>Dibuka di Google Drive</small>";
+        a.innerHTML = "<i>" + icon("i-play") + "</i><span>Tonton Video Full</span>";
         btn.replaceWith(a);
         return;
       }
