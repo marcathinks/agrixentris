@@ -241,7 +241,7 @@
     var v = (draft.settings.video || "").trim();
     if (!v) h.textContent = "Tempel link YouTube atau Google Drive. Jika kosong, bagian video tidak ditampilkan.";
     else if (/(youtu\.be\/|youtube\.com\/(watch\?v=|embed\/|shorts\/))[\w-]{6,}/.test(v)) h.textContent = "Link YouTube dikenali. Video tampil di Beranda dan Tentang Kami.";
-    else if (/drive\.google\.com\/file\/d\/[\w-]{10,}/.test(v)) h.textContent = "Link Google Drive dikenali. Pastikan aksesnya “Siapa saja yang memiliki link” sebagai Pelihat, bukan Editor.";
+    else if (/drive\.google\.com\/(file\/d\/|open\?id=|uc\?(export=\w+&)?id=)[\w-]{10,}/.test(v)) h.textContent = "Link Google Drive dikenali. Di Beranda dan Tentang Kami muncul tombol “Tonton Video Full” yang membuka video di Google Drive. Pastikan aksesnya “Siapa saja yang memiliki link” sebagai Pelihat, bukan Editor.";
     else h.textContent = "Link belum dikenali. Gunakan link YouTube atau link file Google Drive.";
   }
 
